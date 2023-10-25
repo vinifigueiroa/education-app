@@ -40,11 +40,15 @@ public class Course {
         return allCourses.keySet();
     }
 
-    public static void listAllCourses() {
+    public static String listAllCourses() {
+
+        StringBuilder list = new StringBuilder("All Courses:\n\n");
 
         for (Course course : allCourses.values()) {
-            System.out.println(course.toString());
+            list.append(course.toString() + "\n");
         }
+
+        return list.toString();
     }
 
     public static Course getByCode(String code) {

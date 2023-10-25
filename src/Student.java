@@ -35,7 +35,7 @@ public class Student {
     }
 
     public String toString() {
-        return "ID: " + ID +" || Name: "+ name + "\n";
+        return "ID: " + ID +" || Name: "+ name;
     }
 
     public int getOverallGrade(){
@@ -141,10 +141,14 @@ public class Student {
         }
     }
 
-    public static void listAllStudents() {
+    public static String listAllStudents() {
+
+        StringBuilder studentList = new StringBuilder("List of Students:\n\n");
 
         for (Student student : allStudents.values()) {
-            System.out.println(student.toString());
+            studentList.append(student.toString()+ "\n");
         }
+
+        return studentList.toString();
     }
 }
