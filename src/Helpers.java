@@ -1,6 +1,6 @@
 public class Helpers {
 
-    public static boolean positiveIntegerConvert(String s) {
+    public static boolean positiveIntegerCheck(String s) {
 
         //Evaluates if a string input is a valid positive integer and returns a boolean value.
         int i;
@@ -14,7 +14,7 @@ public class Helpers {
             return false;
         }
 
-        if (i  < 0) {
+        if (i  <= 0) {
             return false;
 
         }

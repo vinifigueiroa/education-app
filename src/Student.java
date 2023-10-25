@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class Student {
     }
 
     public String toString() {
-        return "ID: " + ID +" || Name: "+ name + "|| Age: "+ age;
+        return "ID: " + ID +" | "+ name + " | Age: "+ age;
     }
 
     public int getOverallGrade(){
@@ -58,24 +59,23 @@ public class Student {
 
     }
 
-    public int listEnrolledCourses() {
+    public String listEnrolledCourses() {
         // List all courses a student is currently enrolled.
 
-        int count = 0;
+        StringBuilder courses = new StringBuilder("Currently Enrolled Courses:\n\n");
 
         for (Course course : grades.keySet()) {
-            System.out.println(course);
-            count++;
+            courses.append(course.toString()+ "\n");
         }
 
-        return count;
+        return courses.toString();
     }
 
     public void listGrades() {
         // Lists the student's grades
 
         for (Map.Entry<Course, Integer> entry : grades.entrySet()) {
-        System.out.println(entry.getKey() + "|| Grade: " + entry.getValue());
+        System.out.println(entry.getKey() + " || Grade: " + entry.getValue());
         }
     }
 
@@ -143,7 +143,7 @@ public class Student {
         }
     }
 
-    public static String listAllStudents() {
+    public static String stringListAllStudents() {
 
         StringBuilder studentList = new StringBuilder("List of Students:\n\n");
 
@@ -152,5 +152,21 @@ public class Student {
         }
 
         return studentList.toString();
+    }
+
+    public static ArrayList<String> arrayListAllStudents() {
+
+        ArrayList<String> studentList = new ArrayList<>();
+
+        for (Student student : allStudents.values()) {
+            studentList.add(student.toString());
+        }
+
+        return studentList;
+    }
+
+    public static Student[] getAllStudents() {
+
+        return allStudents.values().toArray(new Student[0]);
     }
 }

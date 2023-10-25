@@ -40,6 +40,10 @@ public class Course {
         return allCourses.keySet();
     }
 
+    public static Course[] getAllCourses() {
+        return allCourses.values().toArray(new Course[0]);
+    }
+
     public static String listAllCourses() {
 
         StringBuilder list = new StringBuilder("All Courses:\n\n");
@@ -82,7 +86,7 @@ public class Course {
     }
 
     public String toString() {
-        return "Code: " + this.courseCode + " || Name: " + this.courseName + " || Students Enrolled: " + (this.enrolledStudents).size() + "/" + this.courseMaximumCapacity;
+        return "Code: " + this.courseCode + " | " + this.courseName + " | Students Enrolled: " + (this.enrolledStudents).size() + "/" + this.courseMaximumCapacity;
     }
 
 
