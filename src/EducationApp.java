@@ -1,12 +1,12 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class EducationApp {
     public static void main(String[] args) {
@@ -28,16 +28,16 @@ public class EducationApp {
 
         // Load Default Students
         {
-            new Student("John Smith");
-            new Student("Alice Johnson");
-            new Student("David Lee");
-            new Student("Emily Davis");
-            new Student("Michael Wilson");
-            new Student("Sophia Brown");
-            new Student("James Anderson");
-            new Student("Olivia Garcia");
-            new Student("William Martinez");
-            new Student("Emma Rodriguez");
+            new Student("John Smith", 22);
+            new Student("Alice Johnson", 20);
+            new Student("David Lee", 25);
+            new Student("Emily Davis", 21);
+            new Student("Michael Wilson", 23);
+            new Student("Sophia Brown", 30);
+            new Student("James Anderson", 40);
+            new Student("Olivia Garcia", 20);
+            new Student("William Martinez", 18);
+            new Student("Emma Rodriguez", 32);
         }
 
 
@@ -61,16 +61,22 @@ public class EducationApp {
 
 
         // Student Section
+
+        // Add new Student
         JButton addNewStudent = new JButton("Add New Student");
         mainPanel.add(addNewStudent);
+        addNewStudent.addActionListener(new openAddNewStudentFormAction());
 
+        // Update Student
         JButton updateStudent = new JButton("Update Student's Information");
         mainPanel.add(updateStudent);
 
+        // List All Students
         JButton listAllStudents = new JButton("List All Students");
         mainPanel.add(listAllStudents);
         listAllStudents.addActionListener(new ListStudentsAction());
 
+        // Assign Grade
         JButton assignGrade = new JButton("Assign Grades");
         mainPanel.add(assignGrade);
 
@@ -86,11 +92,49 @@ public class EducationApp {
         mainPanel.add(viewCourses);
         viewCourses.addActionListener(new ListCoursesAction());
 
-
-
-
         // Display Frame
         mainFrame.setVisible(true);
+    }
+
+    private static void displayAddNewStudentForm() {
+
+        JFrame addNewStudentForm = new JFrame("Add New Student");
+        addNewStudentForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addNewStudentForm.setSize(300, 300);
+
+        JPanel addNewStudentPanel = new JPanel();
+        addNewStudentForm.add(addNewStudentPanel);
+
+        JLabel studentNameLabel = new JLabel("Student Name:");
+        addNewStudentPanel.add(studentNameLabel);
+        JTextField studentNameField = new JTextField("First and Last name");
+        addNewStudentPanel.add(studentNameField);
+
+        JLabel studentAgeLabel = new JLabel("Student Age:");
+        addNewStudentPanel.add(studentAgeLabel);
+        JTextField studentAgeField = new JTextField("Age in Years (Numbers)");
+        addNewStudentPanel.add(studentAgeField);
+
+        JButton confirmAddStudent = new JButton("Add Student");
+        addNewStudentPanel.add(confirmAddStudent);
+        confirmAddStudent.addActionListener(e -> {
+
+            String name = studentNameField.getText();
+            int age;
+
+            if (!Helpers.positiveIntegerConvert(studentAgeField.getText())) {
+
+                JOptionPane.showOptionDialog(null, "The age should only contain numbers greater than zero", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, e);
+                return;
+            }
+            age = Integer.parseInt(studentAgeField.getText());
+            Student student = new Student(name, age);
+            JOptionPane.showOptionDialog(null, "Student Added: \n" + student.toString(), "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, e);
+            addNewStudentForm.setVisible(false);
+
+        });
+
+        addNewStudentForm.setVisible(true);
     }
 
     static class ListStudentsAction implements ActionListener {
@@ -106,6 +150,14 @@ public class EducationApp {
         public void actionPerformed(ActionEvent e) {
 
             JOptionPane.showOptionDialog(null, Course.listAllCourses(), "All Courses", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, e);
+        }
+    }
+
+    static class openAddNewStudentFormAction implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+
+            displayAddNewStudentForm();
         }
     }
 }

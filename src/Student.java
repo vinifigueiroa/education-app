@@ -10,14 +10,16 @@ public class Student {
 
     // Instance Variables
     private String name;
+    private int age;
     private int ID;
     private Map<Course, Integer> grades = new HashMap<>();
 
 
     // Constructor
-    public Student(String name) {
+    public Student(String name, int age) {
 
         this.name = name;
+        this.age = age;
         this.ID = studentsCount + 101;
 
         allStudents.put(ID, this);
@@ -35,7 +37,7 @@ public class Student {
     }
 
     public String toString() {
-        return "ID: " + ID +" || Name: "+ name;
+        return "ID: " + ID +" || Name: "+ name + "|| Age: "+ age;
     }
 
     public int getOverallGrade(){
