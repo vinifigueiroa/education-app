@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -105,6 +104,7 @@ public class EducationApp {
         // Assign Grade
         JButton assignGrade = new JButton("Assign Grades");
         mainPanel.add(assignGrade);
+        assignGrade.addActionListener(new openAssignGradeFormAction());
 
 
         // Courses Section
@@ -181,7 +181,6 @@ public class EducationApp {
         addNewCourseForm.setSize(300, 300);
 
         JPanel addNewCoursePanel = new JPanel();
-        // addNewCoursePanel.setLayout(new GridLayout(1, 1));
         addNewCourseForm.add(addNewCoursePanel);
 
         JLabel courseCodeLabel = new JLabel("Course Code:");
@@ -251,7 +250,6 @@ public class EducationApp {
 
 
         JPanel enrollStudentPanel = new JPanel();
-        // addNewCoursePanel.setLayout(new GridLayout(1, 1));
         enrollStudentForm.add(enrollStudentPanel);
 
         JLabel selectStudentLabel = new JLabel("Select A Student:");
@@ -302,6 +300,95 @@ public class EducationApp {
         enrollStudentForm.setVisible(true);
     }
 
+    private static void displayAssignGradeForm() {
+
+        JFrame assignGradeForm = new JFrame("Assign Grade");
+        assignGradeForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        assignGradeForm.setSize(500, 400);
+
+        JPanel assignGradePanel = new JPanel();
+        assignGradeForm.add(assignGradePanel);
+
+        JLabel selectStudentLabel = new JLabel("Select A Student:");
+        assignGradePanel.add(selectStudentLabel);
+
+        JComboBox<Student> studentOptions = new JComboBox<>(Student.getAllStudents());
+        assignGradePanel.add(studentOptions);
+
+        JTextArea enrolledCoursesArea = new JTextArea();
+        enrolledCoursesArea.setBackground(null);
+        assignGradePanel.add(enrolledCoursesArea);
+
+        JLabel selectCourseLabel = new JLabel("Select a Course to Assign a Grade:");
+        assignGradePanel.add(selectCourseLabel);
+
+        JComboBox<Course> courseOptions = new JComboBox<>();
+        assignGradePanel.add(courseOptions);
+
+        JLabel gradeLabel = new JLabel("Type Grade:");
+        assignGradePanel.add(gradeLabel);
+        JTextField gradeField = new JTextField("Select a Course First");
+        assignGradePanel.add(gradeField);
+
+        studentOptions.addActionListener(e -> {
+
+            courseOptions.removeAllItems();
+
+            Student student = (Student) studentOptions.getSelectedItem();
+            Course[] courses = student.getEnrolledCourses();
+
+            for (Course course : courses) {
+                courseOptions.addItem(course);
+            }
+
+            enrolledCoursesArea.setText(student.getGrades());
+            assignGradePanel.revalidate();
+            assignGradePanel.repaint();
+
+        });
+
+        courseOptions.addActionListener(e -> {
+
+            Student student = (Student) studentOptions.getSelectedItem();
+            Course course = (Course) courseOptions.getSelectedItem();
+            Integer grade = student.getGrade(course);
+            gradeField.setText(grade.toString());
+            assignGradePanel.revalidate();
+            assignGradePanel.repaint();
+
+        });
+
+        JButton assignGrade = new JButton("Assign Grade");
+        assignGradePanel.add(assignGrade);
+        assignGrade.addActionListener(e -> {
+
+            Student student = (Student) studentOptions.getSelectedItem();
+            Course course = (Course) courseOptions.getSelectedItem();
+            String inputGrade = gradeField.getText();
+
+            if (!Helpers.positiveIntegerCheck(inputGrade) || inputGrade.isEmpty()) {
+
+                JOptionPane.showOptionDialog(null, "Grade field can`t be empty. Should be a number from 0 to 10", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, e);
+                return;
+            }
+
+            int grade = Integer.parseInt(inputGrade);
+
+            if (grade > 10) {
+
+                JOptionPane.showOptionDialog(null, "Grade be a number between 0 and 10", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, e);
+                return;
+            }
+
+            student.assignGrade(course, grade);
+            JOptionPane.showOptionDialog(null, "Successfully assigned " + grade + " to " + student.getName() + " in the " + course.getCourseName() + " course.", "Confirmation", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, e);
+            assignGradeForm.setVisible(false);
+
+        });
+
+        assignGradeForm.setVisible(true);
+    }
+
     static class ListStudentsAction implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
@@ -339,6 +426,14 @@ public class EducationApp {
         public void actionPerformed(ActionEvent e) {
 
             displayEnrollStudentForm();
+        }
+    }
+
+    static class openAssignGradeFormAction implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+
+            displayAssignGradeForm();
         }
     }
 }

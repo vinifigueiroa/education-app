@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Student {
 
@@ -71,12 +72,26 @@ public class Student {
         return courses.toString();
     }
 
-    public void listGrades() {
+    public Course[] getEnrolledCourses() {
+
+        Set<Course> keySet = grades.keySet();
+        return keySet.toArray(new Course[0]);
+    }
+
+    public String getGrades() {
         // Lists the student's grades
 
-        for (Map.Entry<Course, Integer> entry : grades.entrySet()) {
-        System.out.println(entry.getKey() + " || Grade: " + entry.getValue());
+        StringBuilder grades = new StringBuilder("Current Grades:\n\n");
+
+        for (Map.Entry<Course, Integer> entry : this.grades.entrySet()) {
+            grades.append(entry.getKey() + " || Grade: " + entry.getValue()+ "\n");
         }
+
+        return grades.toString();
+    }
+
+    public Integer getGrade(Course course) {
+        return grades.get(course);
     }
 
     public boolean IsEnrolled(Course course) {

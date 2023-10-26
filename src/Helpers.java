@@ -14,7 +14,7 @@ public class Helpers {
             return false;
         }
 
-        if (i  <= 0) {
+        if (i  < 0) {
             return false;
 
         }
