@@ -92,10 +92,6 @@ public class EducationApp {
         mainPanel.add(addNewStudent);
         addNewStudent.addActionListener(new openAddNewStudentFormAction());
 
-        // Update Student
-        JButton updateStudent = new JButton("Update Student's Information");
-        mainPanel.add(updateStudent);
-
         // List All Students
         JButton listAllStudents = new JButton("List All Students");
         mainPanel.add(listAllStudents);
